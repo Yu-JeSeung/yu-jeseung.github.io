@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 
-const { post } = Astro.props;
+const { post, previousPost, nextPost } = Astro.props;
+const base = import.meta.env.BASE_URL;
 const formattedDate = post.data.pubDate.toLocaleDateString("ko-KR", {
   year: "numeric",
   month: "long",
@@ -23,5 +24,27 @@ const formattedDate = post.data.pubDate.toLocaleDateString("ko-KR", {
     <div class="prose">
       <slot />
     </div>
+    {
+      (previousPost || nextPost) && (
+        <nav class="post-navigation" aria-label="이전 글과 다음 글">
+          {
+            previousPost && (
+              <a class="post-nav-card previous-post" href={`${base}blog/${previousPost.id}/`}>
+                <span>← 이전 글</span>
+                <strong>{previousPost.data.title}</strong>
+              </a>
+            )
+          }
+          {
+            nextPost && (
+              <a class="post-nav-card next-post" href={`${base}blog/${nextPost.id}/`}>
+                <span>이후 글 →</span>
+                <strong>{nextPost.data.title}</strong>
+              </a>
+            )
+          }
+        </nav>
+      )
+    }
   </article>
 </BaseLayout>
