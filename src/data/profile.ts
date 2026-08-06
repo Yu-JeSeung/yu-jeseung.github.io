@@ -5,6 +5,7 @@ export const profile = {
   summary:
     "사용자가 실제로 마주하는 문제를 데이터와 서비스 흐름으로 풀어내는 개발자입니다. 프로젝트에서 겪은 구현 과정과 기술 선택의 이유를 글로 정리하며 성장하고 있습니다.",
   email: "wptmd1410@gmail.com",
+  emailUrl: "https://mail.google.com/mail/?view=cm&fs=1&to=wptmd1410%40gmail.com",
   github: "https://github.com/Yu-JeSeung",
   resumePdf: "portfolio.pdf",
   keywords: ["Backend", "AI", "Project", "Learning", "FastAPI", "RAG", "AWS"],
