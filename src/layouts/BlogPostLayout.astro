@@ -28,19 +28,23 @@ const formattedDate = post.data.pubDate.toLocaleDateString("ko-KR", {
       (previousPost || nextPost) && (
         <nav class="post-navigation" aria-label="이전 글과 다음 글">
           {
-            previousPost && (
-              <a class="post-nav-card previous-post" href={`${base}blog/${previousPost.id}/`}>
-                <span>← 이전 글</span>
-                <strong>{previousPost.data.title}</strong>
+            nextPost ? (
+              <a class="post-nav-card next-post" href={`${base}blog/${nextPost.id}/`}>
+                <span>← 이후 글</span>
+                <strong>{nextPost.data.title}</strong>
               </a>
+            ) : (
+              <span class="post-nav-spacer" aria-hidden="true"></span>
             )
           }
           {
-            nextPost && (
-              <a class="post-nav-card next-post" href={`${base}blog/${nextPost.id}/`}>
-                <span>이후 글 →</span>
-                <strong>{nextPost.data.title}</strong>
+            previousPost ? (
+              <a class="post-nav-card previous-post" href={`${base}blog/${previousPost.id}/`}>
+                <span>이전 글 →</span>
+                <strong>{previousPost.data.title}</strong>
               </a>
+            ) : (
+              <span class="post-nav-spacer" aria-hidden="true"></span>
             )
           }
         </nav>
