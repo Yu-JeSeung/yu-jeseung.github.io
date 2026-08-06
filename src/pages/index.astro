@@ -1,0 +1,99 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { histories, profile, projects, skills } from "../data/profile";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout>
+  <section class="hero section-wide">
+    <div class="hero-orbit" aria-hidden="true">
+      <span></span>
+      <span></span>
+    </div>
+    <div class="hero-copy">
+      <p class="hero-eyebrow">{profile.role}</p>
+      <div class="hero-title">
+        <h1>{profile.name}</h1>
+        <span>{profile.englishName}</span>
+      </div>
+      <p class="hero-summary">{profile.summary}</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#articles">Articles</a>
+        <a class="button ghost" href="#projects">Projects</a>
+        <a class="button ghost icon-button" href={profile.github} target="_blank" rel="noreferrer">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path
+              fill="currentColor"
+              d="M12 2C6.48 2 2 6.58 2 12.25c0 4.52 2.87 8.36 6.84 9.72.5.1.68-.22.68-.5v-1.75c-2.78.62-3.37-1.37-3.37-1.37-.45-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .08 1.53 1.06 1.53 1.06.9 1.57 2.35 1.12 2.93.85.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05A9.29 9.29 0 0 1 12 6.9c.85 0 1.7.12 2.5.35 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9v2.83c0 .28.18.6.69.5A10.17 10.17 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"
+            />
+          </svg>
+          GitHub
+        </a>
+        <a class="button ghost icon-button" href={`mailto:${profile.email}`}>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16v12H4z M4 7l8 6 8-6"
+            />
+          </svg>
+          Email
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section narrow-section">
+    <ul class="skill-grid">
+      {skills.map((skill) => <li><span>{skill.label}</span><strong>{skill.value}</strong></li>)}
+    </ul>
+  </section>
+
+  <section id="projects" class="section section-wide">
+    <h2 class="section-title">Projects</h2>
+    <div class="project-grid">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+
+  <section id="articles" class="section section-wide">
+    <h2 class="section-title">Articles</h2>
+    <div class="article-grid">
+      {posts.slice(0, 3).map((post) => <PostCard post={post} />)}
+    </div>
+    <a class="button ghost more-button" href={`${base}blog/`}>더보기 →</a>
+  </section>
+
+  <section id="history" class="section narrow-section">
+    <h2 class="section-title">Timeline</h2>
+    {
+      histories.map((history) => (
+        <div class="history-group">
+          <h3>{history.group}</h3>
+          {history.items.map((item) => (
+            <article class="history-item">
+              <div class="history-period">{item.period}</div>
+              <div class="history-body">
+                <h4>{item.title}</h4>
+                <ul>
+                  {item.points.map((point) => <li>{point}</li>)}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+      ))
+    }
+  </section>
+</BaseLayout>

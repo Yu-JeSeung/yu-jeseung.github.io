@@ -1,0 +1,29 @@
+---
+const { project } = Astro.props;
+---
+
+<article class="project-card">
+  <div class="card-content">
+    <div>
+      <p class="eyebrow">{project.period}</p>
+      <h3>{project.title}</h3>
+      <p class="project-subtitle">{project.subtitle}</p>
+    </div>
+    <p>{project.description}</p>
+  </div>
+  <div class="tag-row card-tags">
+    {project.stack.map((item: string) => <span>{item}</span>)}
+  </div>
+  <div class="project-bottom">
+    <span>{project.highlight}</span>
+    {
+      project.links.length ? (
+        project.links.map((link: { label: string; href: string }) => (
+          <a href={link.href} target="_blank" rel="noreferrer">{link.label} →</a>
+        ))
+      ) : (
+        <span class="card-action subtle">자세히 보기</span>
+      )
+    }
+  </div>
+</article>

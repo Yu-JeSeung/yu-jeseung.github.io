@@ -1,0 +1,26 @@
+---
+const base = import.meta.env.BASE_URL;
+const pathname = Astro.url.pathname;
+const links = [
+  { href: base, label: "Home" },
+  { href: `${base}blog/`, label: "Articles" }
+];
+---
+
+<header class="site-header">
+  <nav class="nav-shell" aria-label="주요 메뉴">
+    <a class="brand" href={base} aria-label="홈으로 이동">
+      <span class="brand-mark">JS</span>
+      <span>Yu JeSeung</span>
+    </a>
+    <div class="nav-links">
+      {
+        links.map((link) => (
+          <a href={link.href} class:list={{ active: pathname === new URL(link.href, Astro.site).pathname }}>
+            {link.label}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+</header>
