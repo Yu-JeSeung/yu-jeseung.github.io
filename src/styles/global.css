@@ -11,9 +11,47 @@
   --accent-soft: rgba(47, 120, 237, 0.16);
   --border: rgba(255, 255, 255, 0.09);
   --header-bg: rgba(10, 10, 10, 0.72);
+  --nav-active-bg: rgba(255, 255, 255, 0.045);
+  --ghost-bg: rgba(255, 255, 255, 0.04);
+  --ghost-hover-bg: rgba(47, 120, 237, 0.1);
+  --post-nav-bg: rgba(255, 255, 255, 0.035);
+  --page-glow: radial-gradient(
+    ellipse 760px 560px at 50% 420px,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(47, 120, 237, 0.12) 22%,
+    rgba(255, 255, 255, 0.025) 48%,
+    rgba(255, 255, 255, 0) 72%
+  );
   --content-w: 780px;
   --wide-w: 1100px;
   color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #f7f9fc;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --fg: #121722;
+  --fg-soft: #374151;
+  --muted: #667085;
+  --muted-2: #8b95a5;
+  --accent: #2f78ed;
+  --accent-hover: #1f63d5;
+  --accent-soft: rgba(47, 120, 237, 0.11);
+  --border: rgba(15, 23, 42, 0.12);
+  --header-bg: rgba(247, 249, 252, 0.78);
+  --nav-active-bg: rgba(47, 120, 237, 0.1);
+  --ghost-bg: rgba(255, 255, 255, 0.78);
+  --ghost-hover-bg: rgba(47, 120, 237, 0.1);
+  --post-nav-bg: rgba(255, 255, 255, 0.74);
+  --page-glow: radial-gradient(
+    ellipse 760px 560px at 50% 380px,
+    rgba(47, 120, 237, 0.14) 0%,
+    rgba(47, 120, 237, 0.08) 28%,
+    rgba(255, 255, 255, 0.65) 56%,
+    rgba(255, 255, 255, 0) 76%
+  );
+  color-scheme: light;
 }
 
 * {
@@ -22,6 +60,7 @@
 
 html {
   background: var(--bg);
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 
@@ -31,6 +70,7 @@ body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--fg);
+  overflow-x: clip;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
     "Noto Sans KR", "Segoe UI", sans-serif;
   letter-spacing: 0;
@@ -43,17 +83,18 @@ body::before {
   top: 0;
   left: 50%;
   z-index: -1;
-  width: min(1400px, 170vw);
+  width: min(1400px, 100%);
   height: 820px;
   transform: translateX(-50%);
-  background: radial-gradient(
-    ellipse 760px 560px at 50% 420px,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(47, 120, 237, 0.12) 22%,
-    rgba(255, 255, 255, 0.025) 48%,
-    rgba(255, 255, 255, 0) 72%
-  );
+  background: var(--page-glow);
   pointer-events: none;
+}
+
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
 }
 
 a {
@@ -136,9 +177,37 @@ li {
 
 .nav-links a:hover,
 .nav-links a.active {
-  background: rgba(255, 255, 255, 0.045);
+  background: var(--nav-active-bg);
   color: var(--fg);
   text-decoration: none;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--ghost-bg);
+  padding: 6px 11px;
+  color: var(--fg-soft);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.theme-toggle:hover {
+  border-color: rgba(47, 120, 237, 0.48);
+  background: var(--ghost-hover-bg);
+  color: var(--accent);
+  transform: translateY(-1px);
 }
 
 .section,
@@ -298,13 +367,13 @@ li {
 
 .button.ghost {
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--ghost-bg);
   color: var(--fg);
 }
 
 .button.ghost:hover {
   border-color: rgba(47, 120, 237, 0.48);
-  background: rgba(47, 120, 237, 0.1);
+  background: var(--ghost-hover-bg);
 }
 
 .skill-grid {
@@ -676,7 +745,7 @@ li {
   align-content: center;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.035);
+  background: var(--post-nav-bg);
   padding: 16px 18px;
   color: var(--fg);
   width: min(100%, 360px);
@@ -688,7 +757,7 @@ li {
 
 .post-nav-card:hover {
   border-color: rgba(47, 120, 237, 0.48);
-  background: rgba(47, 120, 237, 0.08);
+  background: var(--ghost-hover-bg);
   text-decoration: none;
   transform: translateY(-1px);
 }
@@ -755,20 +824,28 @@ li {
 @media (max-width: 720px) {
   .nav-shell {
     width: min(100% - 32px, var(--wide-w));
-    gap: 16px;
+    justify-content: center;
+    gap: 8px;
   }
 
   .brand {
-    font-size: 0.96rem;
+    display: none;
   }
 
   .nav-links {
+    margin-left: 0;
     gap: 0;
   }
 
   .nav-links a {
     padding: 7px 8px;
     font-size: 0.9rem;
+  }
+
+  .theme-toggle {
+    min-height: 34px;
+    padding: 6px 9px;
+    font-size: 0.82rem;
   }
 
   .section,
@@ -814,6 +891,19 @@ li {
   .project-card,
   .post-card {
     min-height: auto;
+  }
+
+  .project-bottom {
+    flex-wrap: wrap;
+  }
+
+  .post-navigation {
+    gap: 14px;
+  }
+
+  .post-nav-card {
+    width: 100%;
+    padding: 14px;
   }
 
   .card-tags {

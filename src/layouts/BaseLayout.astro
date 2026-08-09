@@ -20,6 +20,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 <!doctype html>
 <html lang="ko">
   <head>
+    <script is:inline>
+      (() => {
+        try {
+          const storedTheme = localStorage.getItem("theme");
+          const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
+          document.documentElement.dataset.theme = theme;
+        } catch {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
@@ -33,5 +44,36 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       <slot />
     </main>
     <Footer />
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const button = document.querySelector("[data-theme-toggle]");
+        if (!button) return;
+
+        const icon = button.querySelector("[data-theme-icon]");
+        const label = button.querySelector("[data-theme-label]");
+
+        const syncButton = () => {
+          const isLight = root.dataset.theme === "light";
+          button.setAttribute("aria-label", isLight ? "다크 모드로 전환" : "라이트 모드로 전환");
+          button.setAttribute("aria-pressed", String(isLight));
+          if (icon) icon.textContent = isLight ? "🌙" : "☀";
+          if (label) label.textContent = isLight ? "Dark" : "Light";
+        };
+
+        button.addEventListener("click", () => {
+          const nextTheme = root.dataset.theme === "light" ? "dark" : "light";
+          root.dataset.theme = nextTheme;
+          try {
+            localStorage.setItem("theme", nextTheme);
+          } catch {
+            // Ignore storage errors and keep the in-page theme switch working.
+          }
+          syncButton();
+        });
+
+        syncButton();
+      })();
+    </script>
   </body>
 </html>
