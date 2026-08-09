@@ -1,7 +1,7 @@
 ---
 title: "포트폴리오 블로그를 시작하며"
 description: "프로젝트 결과물뿐 아니라 과정과 판단을 함께 남기기 위해 블로그를 열었습니다."
-pubDate: 2026-08-05
+pubDate: 2026-08-01
 tags: ["Portfolio", "Blog", "Career"]
 featured: true
 ---

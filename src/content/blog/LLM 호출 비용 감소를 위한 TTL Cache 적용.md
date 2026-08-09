@@ -1,7 +1,7 @@
 ---
 title: "LLM 호출 비용 감소를 위한 TTL Cache 적용"
 description: "챗봇 LLM 호출 비용 및 서버 부하를 줄이기 위해 TTL Cache를 도입하였습니다."
-pubDate: 2026-08-06
+pubDate: 2026-08-05
 tags: ["TTL Cache", "LLM", "Project"]
 ---
 
