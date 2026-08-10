@@ -51,4 +51,46 @@ const formattedDate = post.data.pubDate.toLocaleDateString("ko-KR", {
       )
     }
   </article>
+  <script is:inline>
+    (() => {
+      const prose = document.querySelector(".prose");
+      if (!prose) return;
+
+      const calloutLabels = {
+        note: "Note",
+        tip: "Tip",
+        warning: "Warning",
+        important: "Important",
+        check: "Check"
+      };
+
+      prose.querySelectorAll("blockquote").forEach((blockquote) => {
+        const firstParagraph = blockquote.querySelector("p");
+        const marker = firstParagraph?.textContent?.trim().match(/^\[!(NOTE|TIP|WARNING|IMPORTANT|CHECK)\]/i);
+        if (!marker || !firstParagraph) return;
+
+        const type = marker[1].toLowerCase();
+        blockquote.classList.add("callout", `callout-${type}`);
+        firstParagraph.innerHTML = firstParagraph.innerHTML.replace(
+          /^\s*\[!(?:NOTE|TIP|WARNING|IMPORTANT|CHECK)\]\s*/i,
+          ""
+        );
+
+        const label = document.createElement("strong");
+        label.className = "callout-title";
+        label.textContent = calloutLabels[type] ?? "Note";
+        blockquote.prepend(label);
+      });
+
+      prose.querySelectorAll("pre > code").forEach((code) => {
+        const language = Array.from(code.classList)
+          .find((className) => className.startsWith("language-"))
+          ?.replace("language-", "");
+
+        if (language && code.parentElement) {
+          code.parentElement.dataset.language = language.toUpperCase();
+        }
+      });
+    })();
+  </script>
 </BaseLayout>
